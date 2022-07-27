@@ -3,6 +3,7 @@ const path = require("path");
 const app = express();
 const mysql = require('mysql');
 const cors = require('cors');
+require("dotenv").config();
 
 const db = mysql.createPool({
     host: "database-2.clkm0aogb7m4.us-east-1.rds.amazonaws.com",
@@ -31,12 +32,13 @@ app.get('/products', (req, res) => {
 });
 
     //set static folder
-    if(process.env.NODE_ENV === 'production'){
-    app.use(express.static('client/build'));
-    }  
+    
+    app.use(express.static(path.resolve(__dirname, './client/build')));
+
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
+
 
 
 app.listen(3001, () => {
